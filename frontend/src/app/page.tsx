@@ -36,11 +36,11 @@ export default async function HomePage({
       </nav>
       <main className="flex flex-col items-center gap-12 px-4 py-8 sm:py-16">
         <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
+          Your very own  <span className="text-[hsl(280,100%,70%)]">Patch Notes</span> 📚
         </h1>
-        <p className="text-sm text-gray-300 sm:text-lg">
+        <p className="text-sm text-gray-300 sm:text-xl">
           Changelogs summarized and explained with{" "}
-          <span className="text-[hsl(280,100%,70%)]">AI</span>.
+          <span className="text-[hsl(280,100%,70%)]">AI</span> ✨
         </p>
         <ul className="flex flex-col items-center gap-4 overflow-y-auto">
           {patches?.map((patch) => (

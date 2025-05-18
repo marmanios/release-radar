@@ -24,7 +24,7 @@ export function PatchNotesTile({ patch }: { patch: Tables<"patch_notes"> }) {
           />
         </div>
         <div className="ml-4 w-full">
-          <b>{patch.source.toLowerCase()}</b> - {patch.version.toLowerCase()} -{" "}
+          <b>{patch.source.toLowerCase()}</b> - {patch.version.toLowerCase()}
           <p className="text-gray-300">
             Released: {new Date(patch.released_at).toLocaleDateString()}
           </p>
