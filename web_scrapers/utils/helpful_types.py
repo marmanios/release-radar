@@ -7,7 +7,7 @@ class ScraperOutput(TypedDict):
     source: str
     version: str
     release_date: str
-    changes_html: str
+    changes_raw: str
     link: str
 
 class RefinedOutput(TypedDict):

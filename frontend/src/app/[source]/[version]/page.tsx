@@ -54,15 +54,31 @@ export default async function PatchNotes({
         <Link href={"/"}>Home</Link>
         <Link href={"www.google.com"}>Github</Link>
       </nav>
-      <main className="flex flex-col items-center gap-12 px-4 py-8 sm:py-16">
-        <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-           Changelog summary for <span className="text-[hsl(280,100%,70%)]">{version}</span>
+      <main className="flex flex-col items-center gap-12 px-4 py-8 sm:py-16 ">
+        <h1 className="text-5xl text-center font-extrabold tracking-tight sm:text-[5rem]">
+           Changelog summary for <span className="text-[hsl(280,100%,70%)]">{patchNotes.version}</span>
         </h1>
-        <p className="text-sm text-gray-300 sm:text-lg">
-          Presented by <span className="text-[hsl(280,100%,70%)]">patchnotes.dev</span>. Find the full changelog <Link href={patchNotes.source_url} className="text-[hsl(280,100%,70%)] text-underline">here</Link>.
+        <p className="text-lg text-gray-300 sm:text-2xl">
+          Presented by <span className="text-[hsl(280,100%,70%)]">patchnotes.dev</span>. Find the full changelog <Link rel="noopener noreferrer" target="_blank" href={patchNotes.source_url} className="text-[hsl(280,100%,70%)] underline">here</Link>.
         </p>
-        <section>
+        <section id="summary" className="w-full max-w-6xl px-4 text-md rounded-lg sm:text-lg">
           {patchNotes.ai_summary.summary}
+        </section>
+        <section id="notes" className="w-full max-w-6xl px-4 text-md rounded-lg sm:text-lg">
+          <h2 className="text-2xl font-bold mb-4">Notes</h2>
+          <ul className="list-disc pl-5">
+            {patchNotes.ai_summary.notes.map((note, index) => (
+              <li key={`note-${index}`} className="mb-2">{note}</li>
+            ))}
+          </ul>
+        </section>
+        <section id="supplementary-definitions" className="w-full max-w-6xl px-4 text-md rounded-lg sm:text-lg">
+          <h2 className="text-2xl font-bold mb-4">Supplementary Definitions</h2>
+          <ul className="list-disc pl-5">
+            {patchNotes.ai_summary.supplementary_definitions.map((definition, index) => (
+              <li key={`definition-${index}`} className="mb-2"><b>{definition.term}: </b>{definition.definition}</li>
+            ))}
+          </ul>
         </section>
       </main>
     </div>

@@ -22,7 +22,8 @@ export default async function HomePage({
   const { data: patches, error } = await supabase
     .from("patch_notes")
     .select("*")
-    .range(offset, offset + limit - 1);
+    .range(offset, offset + limit - 1)
+    .order("released_at", { ascending: false });
 
   if (error) {
     console.error("Database error in GET/patches: ", error);

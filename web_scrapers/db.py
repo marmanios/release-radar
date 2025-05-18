@@ -6,18 +6,48 @@ from sqlalchemy.engine import Engine
 from utils.helpful_types import RefinedOutput
 from dotenv import load_dotenv
 from os import getenv
-from sqlalchemy import Table, MetaData, Column, Date, UUID, Text
+from sqlalchemy import Table, MetaData
 from logger import setup_logger
-
+import re, string; 
 # import pandas as pd
 
 load_dotenv()
 
-def get_engine(database_url: str) -> Engine:
+def get_engine() -> Engine:
     """
     Creates and returns a SQLAlchemy engine.
     """
-    return create_engine(database_url)
+    db_url = getenv("DB_URL")
+    if not db_url:
+        raise ValueError("Database URL not found in environment variables.")
+    
+    return create_engine(db_url)
+
+def check_if_patch_exists(source: str, version: str) -> bool:
+    """
+    Checks if a patch with the given source and version already exists in the database.
+
+    Args:
+        source (str): The source of the patch.
+        version (str): The version of the patch.
+        db_engine (Engine): SQLAlchemy engine to connect to the database.
+
+    Returns:
+        bool: True if the patch exists, False otherwise.
+    """
+    db_engine = get_engine()
+
+    meta = MetaData()
+    patch_notes_table = Table('patch_notes', meta, autoload_with=db_engine)
+
+    with db_engine.connect() as connection:
+        query = patch_notes_table.select().where(
+            (patch_notes_table.c.source == source) & 
+            (patch_notes_table.c.version == version)
+        )
+        result = connection.execute(query).fetchone()
+    
+    return result is not None
 
 def load_to_sql(
     data: list[RefinedOutput],
@@ -31,24 +61,12 @@ def load_to_sql(
     logger = setup_logger("db", "web_scrapers/logs/db.log" )
     logger.info("##############  Starting to load data into the database  ##############")
 
-    db_url = getenv("DB_URL")
-    if not db_url:
-        raise ValueError("Database URL not found in environment variables.")
-    
-    db_engine = get_engine(db_url)
+    db_engine = get_engine()
 
     # get the table
     meta = MetaData()
-    patch_notes_table = Table(
-        'patch_notes', meta, 
-        Column('id', UUID, primary_key = True, nullable=False), 
-        Column('source', Text, nullable=False), 
-        Column('source_url', Text, nullable=False), 
-        Column('released_at', Date), 
-        Column('version', Text, nullable=False), 
-        Column('ai_summary', Text, nullable=False), 
-        Column('created_at', Date, nullable=False, server_default='CURRENT_TIMESTAMP'), 
-    )
+    patch_notes_table = Table('patch_notes', meta, autoload_with=db_engine)
+
 
     logger.info(f"Preparing to load data into the database {len(data)} items.")
 
@@ -62,7 +80,7 @@ def load_to_sql(
             "source": item['source'],
             "source_url": item['link'],
             "released_at": item['release_date'],
-            "version": item['version'],
+            "version": re.sub(r'[^a-zA-Z0-9._\-]+', ' ', item['version']).strip(),
             "ai_summary": item['changes_markdown'],
         } for item in data
     ])

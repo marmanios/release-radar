@@ -25,7 +25,7 @@ def fetch_python() -> ScraperOutput | None:
         "source": SOURCE_NAME,
         "version": newest_version.find("h2").text,
         "release_date":  newest_version.find("p").find("em").text[-10:],
-        "changes_html": newest_version.prettify(),
+        "changes_raw": newest_version.prettify(),
         "link": URL + newest_version.find("h2").find("a")["href"],
     }
 
