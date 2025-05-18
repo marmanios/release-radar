@@ -3,12 +3,25 @@
 from scrapers.python import fetch_python
 from ai_models.o4_mini_openai import O4MiniByOpenAI
 from utils.helpful_types import ScraperOutput, RefinedOutput
+from db import load_to_sql
+
+dummy_refined_data = [
+    {
+        "source": "Python",
+        "version": "3.12.0",
+        "release_date": "2023-10-02",
+        "changes_markdown": "### Python 3.12.0 Release Notes\n\n- **New Features**:\n  - Added new syntax for pattern matching.\n  - Improved performance of the garbage collector.\n\n- **Bug Fixes**:\n  - Fixed an issue with the `asyncio` module.\n\n- **Deprecations**:\n  - Deprecated the `distutils` module.",
+        "link": "https://www.python.org/downloads/release/python-3120/"
+    }
+]
 
 def main():
     # fetch data from all scrapers
     scrapers_data: list[ScraperOutput] = []
     py_data = fetch_python()
-    scrapers_data.append(py_data)
+
+    if py_data:
+        scrapers_data.append(py_data)
 
     # use AI
     ai_model = O4MiniByOpenAI()
@@ -26,7 +39,7 @@ def main():
         }) 
 
     # load to DB
-    
+    load_to_sql(refined_data)
 
     # done 
 

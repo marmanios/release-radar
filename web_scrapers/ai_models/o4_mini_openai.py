@@ -1,11 +1,10 @@
 # ai_models/o4_mini_openai.py
 
 from openai import OpenAI
-import tiktoken
 from prompts import generate_user_prompt, system_prompt
-from pydantic import BaseModel
 from dotenv import load_dotenv
 from typing import Literal
+import tiktoken
 import os
 
 load_dotenv()
@@ -18,7 +17,7 @@ class O4MiniByOpenAI:
 
     def call_o4_api(
         self,
-        data: dict,
+        data: str,
         reasoning_effort: Literal["low", "medium", "high"] = "low",
     ) -> str:
         """
@@ -36,7 +35,7 @@ class O4MiniByOpenAI:
         user_message = generate_user_prompt(data)
 
         # Create client
-        client = OpenAI(api_key=os.getenv().OPENAI_APIKEY)
+        client = OpenAI(api_key=os.getenv(key="OPENAI_APIKEY"))
 
         try:
             print("Making an API call to o4-mini with API key")
