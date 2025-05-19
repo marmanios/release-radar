@@ -3,6 +3,8 @@
 import re
 from scrapers.python import fetch_python
 from scrapers.react import fetch_react
+from scrapers.nextjs import fetch_nextJS
+from scrapers.go import fetch_go
 from ai_models.o4_mini_openai import O4MiniByOpenAI
 from utils.helpful_types import ScraperOutput, RefinedOutput
 from db import load_to_sql, check_if_patch_exists
@@ -10,14 +12,26 @@ from db import load_to_sql, check_if_patch_exists
 def main():
     # fetch data from all scrapers
     scrapers_data: list[ScraperOutput] = []
-    react_data = fetch_react()
-    py_data = fetch_python()
+    # nextjs_data = fetch_nextJS()
 
-    if py_data:
-        scrapers_data.append(py_data)
+    go_data = fetch_go()
 
-    if react_data:
-        scrapers_data.append(react_data)
+    # react_data = fetch_react()
+    # py_data = fetch_python()
+
+    # if py_data:
+    #     scrapers_data.append(py_data)
+
+    # if react_data:
+    #     scrapers_data.append(react_data)
+
+    # if nextjs_data:
+    #     scrapers_data.append(nextjs_data)
+
+    if go_data:
+        scrapers_data.append(go_data)
+
+    
 
     # use AI
     ai_model = O4MiniByOpenAI()

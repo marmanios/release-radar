@@ -10,7 +10,7 @@ export function PatchNotesTile({ patch }: { patch: Tables<"patch_notes"> }) {
   return (
     <li
       key={patch.version}
-      className="min-w-[295px] cursor-pointer border-b border-gray-700 pb-2 text-xs sm:min-w-[378px] sm:text-lg"
+      className="w-full cursor-pointer border-b rounded-sm border-gray-700 p-2 text-xs sm:text-lg hover:bg-gray-800"
       onClick={() => {
         router.push(encodeURI(`/${patch.source}/${patch.version}`));
       }}
