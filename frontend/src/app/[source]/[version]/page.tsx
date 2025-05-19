@@ -63,7 +63,7 @@ export default async function ChangeLogs({
            Changelog summary for <span className="text-[#FBC200]">{patchNotes.version}</span> 📕
         </h1>
         <p className="text-lg text-gray-300 sm:text-2xl">
-          Presented by <span className="text-[#FBC200]">patchnotes.dev</span>. Find the full changelog <Link rel="noopener noreferrer" target="_blank" href={patchNotes.source_url} className="text-[#FBC200] underline">here</Link>.
+          Presented by <span className="text-[#FBC200]">ReleaseRadar.dev</span>. Find the full changelog <Link rel="noopener noreferrer" target="_blank" href={patchNotes.source_url} className="text-[#FBC200] underline">here</Link>.
         </p>
         <section id="summary" className="w-full max-w-6xl px-4 text-md rounded-lg sm:text-lg">
           {patchNotes.ai_summary.summary}
