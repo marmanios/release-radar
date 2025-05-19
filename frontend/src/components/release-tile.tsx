@@ -5,7 +5,7 @@ import type { Tables } from "@/types/database";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-export function PatchNotesTile({ patch }: { patch: Tables<"patch_notes"> }) {
+export function ReleaseTile({ patch }: { patch: Tables<"patch_notes"> }) {
   const router = useRouter();
   return (
     <li

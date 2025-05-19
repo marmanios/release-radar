@@ -4,7 +4,7 @@ import { type Metadata } from "next";
 import { Roboto } from "next/font/google";
 
 export const metadata: Metadata = {
-  title: "Patch Notes",
+  title: "Release Radar",
   description: "AI summarized developer changelogs",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };

@@ -3,11 +3,15 @@ import { createAdminClient } from "@/utils/supabase/admin";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function HomePage({
+export default async function SourcePage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ source: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const { source } = await params;
+
   const supabase = await createAdminClient();
   const filters = await searchParams;
   const page = filters.page
@@ -25,6 +29,7 @@ export default async function HomePage({
     .from("patch_notes")
     .select("*")
     .range(offset, offset + limit - 1)
+    .eq("source", decodeURI(source))
     .order("released_at", { ascending: false });
 
   if (fetchListError) {
@@ -37,25 +42,19 @@ export default async function HomePage({
   // Also fetch count of releases for pagination
   const { count: totalReleases, error: countError } = await supabase
     .from("patch_notes")
-    .select("*", { count: "exact" });
+    .select("*", { count: "exact" })
+    .eq("source", decodeURI(source));
 
-  if (countError || !totalReleases) {
+  if (countError || totalReleases === null) {
     console.error("Database error in GET/patches count: ", countError);
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
-      <div className="hidden lg:block fixed top-1/2 right-0 -translate-y-1/2 mr-20 z-0">
-        <Image
-          src={`/clay-icon-tilted-left.png`}
-          alt="Background"
-          className="object-cover"
-          width={360}
-          height={360}
-        />
-      </div>
       <nav className="sticky top-0 flex h-16 items-center justify-between px-4 backdrop-blur-sm">
-        <span> </span>
+        <Link className="flex items-center gap-4 hover:underline" href={"/"}>
+          Home
+        </Link>
         <Link
           className="flex items-center gap-4 hover:underline"
           href={"https://github.com/marmanios/patch_notes"}
@@ -66,7 +65,7 @@ export default async function HomePage({
       </nav>
       <main className="mx-auto flex max-w-6xl flex-col items-center gap-12 px-4 py-8 sm:py-16">
         <h1 className="text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          Your very own <span className="text-[#FBC200]">Release Radar</span>
+          <span className="text-[#FBC200]">{source}</span> Release Radar
         </h1>
         <p className="mx-auto text-center text-sm text-gray-300 sm:text-xl">
           Changelogs summarized and explained with{" "}

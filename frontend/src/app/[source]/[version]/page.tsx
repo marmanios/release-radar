@@ -1,10 +1,9 @@
-import { PatchNotesTile } from "@/components/patch-notes-tile";
 import type { TAiSummary } from "@/types";
 import { createAdminClient } from "@/utils/supabase/admin";
 import Link from "next/link";
 import Image from "next/image";
 
-export default async function PatchNotes({
+export default async function ChangeLogs({
   params,
 }: {
   params: Promise<{ source: string; version: string }>;
@@ -12,7 +11,7 @@ export default async function PatchNotes({
   const supabase = await createAdminClient();
   const { source, version } = await params;
 
-  console.log("Fetching patch notes for source:", source, "and version:", version);
+  console.log("Fetching Changelogs for source:", source, "and version:", version);
   
   const { data, error } = await supabase
     .from("patch_notes")
@@ -22,7 +21,7 @@ export default async function PatchNotes({
     .single();
 
   if (error || !data) {
-    console.error("Database error in GET/patches: ", error);
+    console.error(`Database error in GET/${source}/{version}: ${error.message}`);
     return (
     <div className="min-h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
       <nav className="flex h-16 items-center justify-between px-4">
@@ -52,7 +51,12 @@ export default async function PatchNotes({
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
       <nav className="flex h-16 items-center justify-between px-4 sticky top-0 backdrop-blur-sm ">
-        <Link className="hover:underline" href={"/"}>Home</Link>
+        <span className="flex items-center gap-4">
+          <Link className="hover:underline" href={"/"}>Home</Link>
+          <Link className="hover:underline" href={`/${source}`}>Previous Releases</Link>
+        
+        </span>
+          
         <Link className="flex gap-4 items-center hover:underline" href={"https://github.com/marmanios/patch_notes"}>Contribute! <Image src={`/github.svg`} height={32} width={32} alt={`GitHub`}/></Link>
       </nav>
       <main className="flex flex-col items-center gap-12 px-4 py-8 sm:py-16 max-w-6xl mx-auto">
