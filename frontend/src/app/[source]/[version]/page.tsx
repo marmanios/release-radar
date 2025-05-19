@@ -54,7 +54,6 @@ export default async function ChangeLogs({
         <span className="flex items-center gap-4">
           <Link className="hover:underline" href={"/"}>Home</Link>
           <Link className="hover:underline" href={`/${source}`}>Previous Releases</Link>
-        
         </span>
           
         <Link className="flex gap-4 items-center hover:underline" href={"https://github.com/marmanios/patch_notes"}>Contribute! <Image src={`/github.svg`} height={32} width={32} alt={`GitHub`}/></Link>
