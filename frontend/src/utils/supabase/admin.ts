@@ -7,8 +7,8 @@ export const createAdminClient = async () => {
   const cookieStore = await cookies();
 
   return createServerClient<Database>(
-    env["NEXT_PUBLIC_SUPABASE_URL"],
-    env["SUPBASE_SERVICE_ROLE_KEY"],
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.SUPBASE_SERVICE_ROLE_KEY,
     {
       cookies: {
         getAll() {
@@ -20,9 +20,7 @@ export const createAdminClient = async () => {
               cookieStore.set(name, value, options);
             });
           } catch (error) {
-            // The `set` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
+           console.log("Error setting cookies:", error);
           }
         },
       },

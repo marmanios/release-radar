@@ -15,7 +15,7 @@ export default async function SourcePage({
   const supabase = await createAdminClient();
   const filters = await searchParams;
   const page = filters.page
-    ? Array.isArray(filters.page!)
+    ? Array.isArray(filters.page)
       ? parseInt(filters.page[0]!)
       : 1
     : 1;

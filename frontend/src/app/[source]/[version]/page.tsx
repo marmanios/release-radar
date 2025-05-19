@@ -40,7 +40,7 @@ export default async function ChangeLogs({
     source_url: string;
     version: string;
   } = {
-    ai_summary: JSON.parse(data.ai_summary),
+    ai_summary: JSON.parse(data.ai_summary) as TAiSummary,
     created_at:  new Date(data.created_at),
     released_at: new Date(data.released_at),
     source: data.source,
