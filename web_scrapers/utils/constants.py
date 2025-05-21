@@ -1,0 +1,1 @@
+log_folder_path = "web_scrapers/logs"
