@@ -10,21 +10,20 @@ export default async function HomePage({
 }) {
   const supabase = await createAdminClient();
   const filters = await searchParams;
-  const page = filters.page
-    ? Array.isArray(filters.page)
-      ? parseInt(filters.page[0]!)
-      : 1
-    : 1;
-  const limit = 5; // Default limit for pagination
+  const page = Array.isArray(filters.page)
+    ? parseInt(filters.page[0] ?? "1")
+    : parseInt((filters.page as string | undefined) ?? "1");
+
+  const resultsPerPage = 5; // Default resultsPerPage for pagination
 
   // Calculate the offset for pagination
-  const offset = (page - 1) * limit;
+  const offset = (page - 1) * resultsPerPage;
 
   // Fetch the releases list from the database
   const { data: releases, error: fetchListError } = await supabase
     .from("patch_notes")
     .select("*")
-    .range(offset, offset + limit - 1)
+    .range(offset, offset + resultsPerPage - 1)
     .order("released_at", { ascending: false });
 
   if (fetchListError) {
@@ -42,6 +41,8 @@ export default async function HomePage({
   if (countError || !totalReleases) {
     console.error("Database error in GET/patches count: ", countError);
   }
+
+  const totalPages = Math.ceil((totalReleases ?? 0) / resultsPerPage); 
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
@@ -80,7 +81,7 @@ export default async function HomePage({
           {!releases && <li>Error Getting Releases 💥</li>}
         </ul>
         {/* TODO: Pagination controls */}
-        {/* {totalReleases && (
+        {totalReleases && (
           <div className="flex max-w-md w-full justify-between">
             <Link
               href={`?page=${page - 1}`}
@@ -91,18 +92,41 @@ export default async function HomePage({
             >
               Previous
             </Link>
-            <span className="px-3 py-1">{page}</span>
+            <div className="flex gap-1">
+                {Array.from({ length: 5 }, (_, i) => {
+                  // Always show 5 entries, centered around current page when possible
+                  let startPage = Math.max(1, Math.min(page - 2, totalPages - 4));
+                  // If there are less than 5 pages, start at 1
+                  if (totalPages < 5) startPage = 1;
+                  const pageNumber = startPage + i;
+                  if (pageNumber > totalPages) return null;
+                  return (
+                    <Link
+                      key={pageNumber}
+                      href={`?page=${pageNumber}`}
+                      className={`px-3 py-1 rounded ${
+                        page === pageNumber
+                          ? "bg-[#FBC200] text-black font-bold"
+                          : "bg-gray-700 text-white hover:bg-[#FBC200] hover:text-black"
+                      }`}
+                      aria-current={page === pageNumber ? "page" : undefined}
+                    >
+                      {pageNumber}
+                    </Link>
+                  );
+                })}
+            </div>
             <Link
               href={`?page=${page + 1}`}
               className={`px-3 py-1 rounded bg-[#FBC200] text-black font-semibold ${
-                offset + limit >= totalReleases ? "opacity-50 pointer-events-none" : ""
+                totalPages <= page ? "opacity-50 pointer-events-none" : ""
               }`}
-              aria-disabled={offset + limit >= totalReleases}
+              aria-disabled={totalPages <= page}
             >
               Next
             </Link>
           </div>
-        )} */}
+        )}
       </main>
     </div>
   );
