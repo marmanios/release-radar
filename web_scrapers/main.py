@@ -6,6 +6,7 @@ from scrapers.python import PythonScraper
 from scrapers.react import ReactScraper
 from scrapers.nextjs import NextJsScraper
 from scrapers.scraper import ScraperBaseClass
+from scrapers.typescript import TypescriptScraper
 from scrapers.go import GoScraper
 from ai_models.o4_mini_openai import O4MiniByOpenAI
 from utils.helpful_types import ScraperOutput, RefinedOutput
@@ -30,6 +31,7 @@ def main():
         ReactScraper(),
         NextJsScraper(),
         GoScraper(),
+        TypescriptScraper(),
     ]
 
     # scraper
