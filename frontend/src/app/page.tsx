@@ -12,7 +12,7 @@ export default async function HomePage({
   const filters = await searchParams;
   const page = Array.isArray(filters.page)
     ? parseInt(filters.page[0] ?? "1")
-    : parseInt((filters.page as string | undefined) ?? "1");
+    : parseInt(filters.page ?? "1");
 
   const resultsPerPage = 5; // Default resultsPerPage for pagination
 
