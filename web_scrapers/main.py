@@ -64,9 +64,11 @@ def main():
         }) 
 
     # load to DB
+    if not refined_data:
+        print("No new data to load into the database.")
+        return
+    
     load_to_sql(refined_data)
-
-    # done 
 
 print(__name__)
 if (__name__ == "__main__"):

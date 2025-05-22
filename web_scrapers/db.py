@@ -1,14 +1,16 @@
 # db.py
 
+import re
+import os 
 from sqlalchemy import create_engine
 from sqlalchemy import insert
 from sqlalchemy.engine import Engine
 from utils.helpful_types import RefinedOutput
 from dotenv import load_dotenv
+from utils.constants import log_folder_path
 from os import getenv
 from sqlalchemy import Table, MetaData
 from logger import setup_logger
-import re, string; 
 # import pandas as pd
 
 load_dotenv()
@@ -58,7 +60,9 @@ def load_to_sql(
     Args:
         data (list[RefinedOutput]): List of RefinedOutput objects to load.
     """
-    logger = setup_logger("db", "web_scrapers/logs/db.log" )
+    parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    log_file_path = os.path.join(parent_dir, log_folder_path, "db.log")
+    logger = setup_logger("db", log_file_path)
     logger.info("##############  Starting to load data into the database  ##############")
 
     db_engine = get_engine()

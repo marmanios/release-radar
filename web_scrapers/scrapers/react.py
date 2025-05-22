@@ -2,9 +2,6 @@
 
 import re
 import requests
-from datetime import datetime
-from bs4 import BeautifulSoup
-from logger import setup_logger
 from utils.helpful_types import ScraperOutput
 
 

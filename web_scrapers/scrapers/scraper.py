@@ -1,16 +1,20 @@
+
 from abc import ABC, abstractmethod
 from typing import Optional
 from utils.helpful_types import ScraperOutput
 from logger import setup_logger
 from utils.helpful_types import ScraperOutput
 from utils.constants import log_folder_path
+import os
 
 class ScraperBaseClass(ABC):
     def __init__(self):
         """
         Initialize the ScraperBaseClass.
         """
-        self.logger = setup_logger(self.name, f"{log_folder_path}/{self.name}.log")
+        parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+        log_file_path = os.path.join(parent_dir, log_folder_path, f"{self.name}.log")
+        self.logger = setup_logger(self.name, log_file_path)
 
 
     """
