@@ -25,6 +25,12 @@ def get_engine() -> Engine:
     
     return create_engine(db_url)
 
+def get_table(db_engine: Engine) -> Table:
+    meta = MetaData()
+    runtime_env = getenv("RUNTIME_ENV")
+    return Table('dev_patch_notes' if runtime_env == "dev" else 'patch_notes', meta, autoload_with=db_engine)
+
+
 def check_if_patch_exists(source: str, version: str) -> bool:
     """
     Checks if a patch with the given source and version already exists in the database.
@@ -38,9 +44,7 @@ def check_if_patch_exists(source: str, version: str) -> bool:
         bool: True if the patch exists, False otherwise.
     """
     db_engine = get_engine()
-
-    meta = MetaData()
-    patch_notes_table = Table('patch_notes', meta, autoload_with=db_engine)
+    patch_notes_table  = get_table(db_engine)
 
     with db_engine.connect() as connection:
         query = patch_notes_table.select().where(
@@ -66,11 +70,7 @@ def load_to_sql(
     logger.info("##############  Starting to load data into the database  ##############")
 
     db_engine = get_engine()
-
-    # get the table
-    meta = MetaData()
-    patch_notes_table = Table('patch_notes', meta, autoload_with=db_engine)
-
+    patch_notes_table = get_table(db_engine)
 
     logger.info(f"Preparing to load data into the database {len(data)} items.")
 
