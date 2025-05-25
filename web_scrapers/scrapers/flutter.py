@@ -7,6 +7,7 @@ from utils.helpful_types import ScraperOutput
 from scrapers.scraper import ScraperBaseClass
 from typing import Optional
 from datetime import datetime, timedelta
+from html_to_markdown import convert_to_markdown
 
 def parse_release_date(date_str: str) -> datetime:
     """
@@ -73,7 +74,7 @@ class FlutterScraper(ScraperBaseClass):
             
 
             # combine the content from both pages
-            combined_content = announcement_content.prettify() + "\n" + release_notes_content.prettify()
+            combined_content = convert_to_markdown(announcement_content) + "\n" + convert_to_markdown(release_notes_content)
 
             # Find parameters
             return {
