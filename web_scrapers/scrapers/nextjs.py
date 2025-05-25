@@ -5,6 +5,8 @@ from bs4 import BeautifulSoup
 from utils.helpful_types import ScraperOutput
 from scrapers.scraper import ScraperBaseClass
 from typing import Optional
+from html_to_markdown import convert_to_markdown
+
 
 class NextJsScraper(ScraperBaseClass):
     @property
@@ -70,7 +72,7 @@ class NextJsScraper(ScraperBaseClass):
                         "source": self.name,
                         "version": release_name,
                         "release_date": date,
-                        "changes_raw": body.prettify(),
+                        "changes_raw": convert_to_markdown(body),
                         "link": self.url + f"/tag/{release_name}",
                     }
                 

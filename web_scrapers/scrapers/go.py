@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from utils.helpful_types import ScraperOutput
 from scrapers.scraper import ScraperBaseClass
 from typing import Optional
+from html_to_markdown import convert_to_markdown
 
 
 # extracts version date from strings like "go1.24.0 (released 2025-02-11)"
@@ -73,7 +74,7 @@ class GoScraper(ScraperBaseClass):
                     "source": self.name,
                     "version": latest_version,
                     "release_date": latest_version_release_date,
-                    "changes_raw": "\n".join([changelog_pr_title.prettify() for changelog_pr_title in changelog_pr_titles]),
+                    "changes_raw": "\n".join([convert_to_markdown(changelog_pr_title) for changelog_pr_title in changelog_pr_titles]),
                     "link": latest_version_changelog_url,
                 }
 
@@ -112,7 +113,7 @@ class GoScraper(ScraperBaseClass):
                     "source": self.name,
                     "version": latest_version,
                     "release_date": latest_version_release_date,
-                    "changes_raw": changelog_page_html.prettify(),
+                    "changes_raw": convert_to_markdown(changelog_page_html),
                     "link": latest_version_changelog_url,
                 }
 

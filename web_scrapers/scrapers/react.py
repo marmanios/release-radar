@@ -4,7 +4,6 @@ import re
 import requests
 from utils.helpful_types import ScraperOutput
 
-
 from scrapers.scraper import ScraperBaseClass
 from typing import Optional
 

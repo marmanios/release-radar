@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from utils.helpful_types import ScraperOutput
 from scrapers.scraper import ScraperBaseClass
 from typing import Optional
+from html_to_markdown import convert_to_markdown
 
 class PythonScraper(ScraperBaseClass):
     @property
@@ -36,7 +37,7 @@ class PythonScraper(ScraperBaseClass):
                 "source": self.name,
                 "version": newest_version.find("h2").text,
                 "release_date":  newest_version.find("p").find("em").text[-10:],
-                "changes_raw": newest_version.prettify(),
+                "changes_raw": convert_to_markdown(newest_version),
                 "link": self.url + newest_version.find("h2").find("a")["href"],
             }
         

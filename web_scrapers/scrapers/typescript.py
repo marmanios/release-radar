@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from utils.helpful_types import ScraperOutput
 from scrapers.scraper import ScraperBaseClass
 from typing import Optional
+from html_to_markdown import convert_to_markdown
 
 class TypescriptScraper(ScraperBaseClass):
     @property
@@ -71,7 +72,7 @@ class TypescriptScraper(ScraperBaseClass):
                         "source": self.name,
                         "version": release_name,
                         "release_date": release_date,
-                        "changes_raw": changelog.prettify(),
+                        "changes_raw": convert_to_markdown(changelog),
                         "link": release_announcement_url,
                     }
                 
