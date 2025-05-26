@@ -42,11 +42,11 @@ export default async function HomePage({
     console.error("Database error in GET/patches count: ", countError);
   }
 
-  const totalPages = Math.ceil((totalReleases ?? 0) / resultsPerPage); 
+  const totalPages = Math.ceil((totalReleases ?? 0) / resultsPerPage);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
-      <div className="hidden lg:block fixed top-1/2 right-0 -translate-y-1/2 mr-20 z-0">
+      <div className="fixed top-1/2 right-0 z-0 mr-20 hidden -translate-y-1/2 lg:block">
         <Image
           src={`/clay-icon-tilted-left.png`}
           alt="Background"
@@ -55,22 +55,26 @@ export default async function HomePage({
           height={360}
         />
       </div>
-      <nav className="sticky top-0 flex h-16 items-center justify-between px-4 backdrop-blur-sm">
-        <span> </span>
-        <Link
-          className="flex items-center gap-4 hover:underline"
-          href={"https://github.com/marmanios/patch_notes"}
-        >
-          Contribute!{" "}
-          <Image src={`/github.svg`} height={32} width={32} alt={`GitHub`} />
-        </Link>
-      </nav>
-      <main className="mx-auto flex max-w-6xl flex-col items-center gap-12 px-4 py-8 sm:py-16">
+      <header className="sticky top-0 flex h-16 items-center justify-center border-b-3 border-black px-4 backdrop-blur-sm">
+        <div className="flex w-full max-w-5xl items-center justify-between">
+          <Link className="text-xl" href={"/"}>
+            Release<span className="text-[#FBC200]">Radar</span>
+          </Link>
+          <Link
+            className="flex items-center gap-4 hover:underline"
+            href={"https://github.com/marmanios/patch_notes"}
+          >
+            Contribute!{" "}
+            <Image src={`/github.svg`} height={32} width={32} alt={`GitHub`} />
+          </Link>
+        </div>
+      </header>
+      <main className="mx-auto flex max-w-6xl flex-col items-center gap-12 p4 sm:py-16">
         <h1 className="text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          Your very own <span className="text-[#FBC200]">Release Radar</span>
+          Recent Changes
         </h1>
-        <p className="mx-auto text-center text-sm text-gray-300 sm:text-xl">
-          Changelogs summarized and explained with{" "}
+        <p className="mx-auto max-w-3xl text-center text-sm text-gray-300 sm:text-lg">
+          Below are the most recent changes that have happened in the programming world. Click on a release to have it summarized with supplementary definitions and notes provided by {" "}
           <span className="text-[#FBC200]">AI</span> ✨
         </p>
         <ul className="flex w-full max-w-md flex-col items-center overflow-y-auto">
@@ -82,44 +86,44 @@ export default async function HomePage({
         </ul>
         {/* TODO: Pagination controls */}
         {totalReleases && (
-          <div className="flex max-w-md w-full justify-between">
+          <div className="flex w-full max-w-md justify-between">
             <Link
               href={`?page=${page - 1}`}
-              className={`px-3 py-1 rounded bg-[#FBC200] text-black font-semibold ${
-                page <= 1 ? "opacity-50 pointer-events-none" : ""
+              className={`rounded bg-[#FBC200] px-3 py-1 font-semibold text-black ${
+                page <= 1 ? "pointer-events-none opacity-50" : ""
               }`}
               aria-disabled={page <= 1}
             >
               Previous
             </Link>
             <div className="flex gap-1">
-                {Array.from({ length: 5 }, (_, i) => {
-                  // Always show 5 entries, centered around current page when possible
-                  let startPage = Math.max(1, Math.min(page - 2, totalPages - 4));
-                  // If there are less than 5 pages, start at 1
-                  if (totalPages < 5) startPage = 1;
-                  const pageNumber = startPage + i;
-                  if (pageNumber > totalPages) return null;
-                  return (
-                    <Link
-                      key={pageNumber}
-                      href={`?page=${pageNumber}`}
-                      className={`px-3 py-1 rounded ${
-                        page === pageNumber
-                          ? "bg-[#FBC200] text-black font-bold"
-                          : "bg-gray-700 text-white hover:bg-[#FBC200] hover:text-black"
-                      }`}
-                      aria-current={page === pageNumber ? "page" : undefined}
-                    >
-                      {pageNumber}
-                    </Link>
-                  );
-                })}
+              {Array.from({ length: 5 }, (_, i) => {
+                // Always show 5 entries, centered around current page when possible
+                let startPage = Math.max(1, Math.min(page - 2, totalPages - 4));
+                // If there are less than 5 pages, start at 1
+                if (totalPages < 5) startPage = 1;
+                const pageNumber = startPage + i;
+                if (pageNumber > totalPages) return null;
+                return (
+                  <Link
+                    key={pageNumber}
+                    href={`?page=${pageNumber}`}
+                    className={`rounded px-3 py-1 ${
+                      page === pageNumber
+                        ? "bg-[#FBC200] font-bold text-black"
+                        : "bg-gray-700 text-white hover:bg-[#FBC200] hover:text-black"
+                    }`}
+                    aria-current={page === pageNumber ? "page" : undefined}
+                  >
+                    {pageNumber}
+                  </Link>
+                );
+              })}
             </div>
             <Link
               href={`?page=${page + 1}`}
-              className={`px-3 py-1 rounded bg-[#FBC200] text-black font-semibold ${
-                totalPages <= page ? "opacity-50 pointer-events-none" : ""
+              className={`rounded bg-[#FBC200] px-3 py-1 font-semibold text-black ${
+                totalPages <= page ? "pointer-events-none opacity-50" : ""
               }`}
               aria-disabled={totalPages <= page}
             >
@@ -128,6 +132,12 @@ export default async function HomePage({
           </div>
         )}
       </main>
+      <footer className="flex w-full items-center justify-center border-t-3 border-black p-4">
+        <p className="text-sm text-gray-300">
+          Made by{" "}
+          <Link href={"https://marmanios.com"} className="text-[#FBC200]">Maged</Link>
+        </p>
+      </footer>
     </div>
   );
 }

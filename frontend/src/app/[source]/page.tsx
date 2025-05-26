@@ -51,18 +51,20 @@ export default async function SourcePage({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
-      <nav className="sticky top-0 flex h-16 items-center justify-between px-4 backdrop-blur-sm">
-        <Link className="flex items-center gap-4 hover:underline" href={"/"}>
-          Home
-        </Link>
-        <Link
-          className="flex items-center gap-4 hover:underline"
-          href={"https://github.com/marmanios/patch_notes"}
-        >
-          Contribute!{" "}
-          <Image src={`/github.svg`} height={32} width={32} alt={`GitHub`} />
-        </Link>
-      </nav>
+      <header className="sticky top-0 flex h-16 items-center justify-center border-b-3 border-black px-4 backdrop-blur-sm">
+        <div className="flex w-full max-w-5xl items-center justify-between">
+          <Link className="text-xl" href={"/"}>
+            Release<span className="text-[#FBC200]">Radar</span>
+          </Link>
+          <Link
+            className="flex items-center gap-4 hover:underline"
+            href={"https://github.com/marmanios/patch_notes"}
+          >
+            Contribute!{" "}
+            <Image src={`/github.svg`} height={32} width={32} alt={`GitHub`} />
+          </Link>
+        </div>
+      </header>
       <main className="mx-auto flex max-w-6xl flex-col items-center gap-12 px-4 py-8 sm:py-16">
         <h1 className="text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           <span className="text-[#FBC200]">{source}</span> Release Radar
