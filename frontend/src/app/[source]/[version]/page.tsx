@@ -3,6 +3,8 @@ import { createAdminClient } from "@/utils/supabase/admin";
 import Link from "next/link";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 export default async function ChangeLogs({
   params,
@@ -57,21 +59,9 @@ export default async function ChangeLogs({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
-      <header className="sticky top-0 flex h-16 items-center justify-center border-b-3 border-black px-4 backdrop-blur-sm">
-        <div className="flex w-full max-w-5xl items-center justify-between">
-          <Link className="text-xl" href={"/"}>
-            Release<span className="text-[#FBC200]">Radar</span>
-          </Link>
-          <nav className="sticky top-0 flex h-16 items-center justify-between">
-            <Link className="hover:underline" href={`/${source}`}>
-              Previous Releases
-            </Link>
-          </nav>
-        </div>
-      </header>
-
-      <main className="mx-auto flex max-w-6xl flex-col items-center gap-12 px-4 py-8 sm:py-16">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
+      <Header />
+      <main className="mx-auto flex flex-col flex-1 max-w-6xl items-center gap-12 px-4 py-8 sm:py-16">
         <h1 className="text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           Changelog summary for{" "}
           <span className="text-[#FBC200]">{patchNotes.version}</span> 📕
@@ -157,6 +147,7 @@ export default async function ChangeLogs({
           </ul>
         </section>
       </main>
+      <Footer/>
     </div>
   );
 }

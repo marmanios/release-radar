@@ -1,3 +1,5 @@
+import Footer from "@/components/footer";
+import Header from "@/components/header";
 import { ReleaseTile } from "@/components/release-tile";
 import { createAdminClient } from "@/utils/supabase/admin";
 import Image from "next/image";
@@ -11,7 +13,7 @@ export default async function SourcePage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { source } = await params;
-
+  const resultsPerPage = 5;
   const supabase = await createAdminClient();
   const filters = await searchParams;
   const page = filters.page
@@ -49,23 +51,12 @@ export default async function SourcePage({
     console.error("Database error in GET/patches count: ", countError);
   }
 
+  const totalPages = Math.ceil((totalReleases ?? 0) / resultsPerPage);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
-      <header className="sticky top-0 flex h-16 items-center justify-center border-b-3 border-black px-4 backdrop-blur-sm">
-        <div className="flex w-full max-w-5xl items-center justify-between">
-          <Link className="text-xl" href={"/"}>
-            Release<span className="text-[#FBC200]">Radar</span>
-          </Link>
-          <Link
-            className="flex items-center gap-4 hover:underline"
-            href={"https://github.com/marmanios/patch_notes"}
-          >
-            Contribute!{" "}
-            <Image src={`/github.svg`} height={32} width={32} alt={`GitHub`} />
-          </Link>
-        </div>
-      </header>
-      <main className="mx-auto flex max-w-6xl flex-col items-center gap-12 px-4 py-8 sm:py-16">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
+      <Header />
+      <main className="mx-auto flex flex-1 max-w-6xl flex-col items-center gap-12 px-4 py-8 sm:py-16">
         <h1 className="text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           <span className="text-[#FBC200]">{source}</span> Release Radar
         </h1>
@@ -80,31 +71,55 @@ export default async function SourcePage({
           {releases && releases.length === 0 && <li>No Releases Found 😢</li>}
           {!releases && <li>Error Getting Releases 💥</li>}
         </ul>
-        {/* TODO: Pagination controls */}
-        {/* {totalReleases && (
-          <div className="flex max-w-md w-full justify-between">
+        {/* Pagination controls */}
+        {totalReleases && (
+          <div className="flex w-full max-w-md justify-between">
             <Link
               href={`?page=${page - 1}`}
-              className={`px-3 py-1 rounded bg-[#FBC200] text-black font-semibold ${
-                page <= 1 ? "opacity-50 pointer-events-none" : ""
+              className={`rounded bg-[#FBC200] px-3 py-1 font-semibold text-black ${
+                page <= 1 ? "pointer-events-none opacity-50" : ""
               }`}
               aria-disabled={page <= 1}
             >
               Previous
             </Link>
-            <span className="px-3 py-1">{page}</span>
+            <div className="flex gap-1">
+              {Array.from({ length: 5 }, (_, i) => {
+                // Always show 5 entries, centered around current page when possible
+                let startPage = Math.max(1, Math.min(page - 2, totalPages - 4));
+                // If there are less than 5 pages, start at 1
+                if (totalPages < 5) startPage = 1;
+                const pageNumber = startPage + i;
+                if (pageNumber > totalPages) return null;
+                return (
+                  <Link
+                    key={pageNumber}
+                    href={`?page=${pageNumber}`}
+                    className={`rounded px-3 py-1 ${
+                      page === pageNumber
+                        ? "bg-[#FBC200] font-bold text-black"
+                        : "bg-gray-700 text-white hover:bg-[#FBC200] hover:text-black"
+                    }`}
+                    aria-current={page === pageNumber ? "page" : undefined}
+                  >
+                    {pageNumber}
+                  </Link>
+                );
+              })}
+            </div>
             <Link
               href={`?page=${page + 1}`}
-              className={`px-3 py-1 rounded bg-[#FBC200] text-black font-semibold ${
-                offset + limit >= totalReleases ? "opacity-50 pointer-events-none" : ""
+              className={`rounded bg-[#FBC200] px-3 py-1 font-semibold text-black ${
+                totalPages <= page ? "pointer-events-none opacity-50" : ""
               }`}
-              aria-disabled={offset + limit >= totalReleases}
+              aria-disabled={totalPages <= page}
             >
               Next
             </Link>
           </div>
-        )} */}
+        )}
       </main>
+      <Footer/>
     </div>
   );
 }

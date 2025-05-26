@@ -1,3 +1,5 @@
+import Footer from "@/components/footer";
+import Header from "@/components/header";
 import { ReleaseTile } from "@/components/release-tile";
 import { createAdminClient } from "@/utils/supabase/admin";
 import Image from "next/image";
@@ -45,7 +47,7 @@ export default async function HomePage({
   const totalPages = Math.ceil((totalReleases ?? 0) / resultsPerPage);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
       <div className="fixed top-1/2 right-0 z-0 mr-20 hidden -translate-y-1/2 lg:block">
         <Image
           src={`/clay-icon-tilted-left.png`}
@@ -55,21 +57,8 @@ export default async function HomePage({
           height={360}
         />
       </div>
-      <header className="sticky top-0 flex h-16 items-center justify-center border-b-3 border-black px-4 backdrop-blur-sm">
-        <div className="flex w-full max-w-5xl items-center justify-between">
-          <Link className="text-xl" href={"/"}>
-            Release<span className="text-[#FBC200]">Radar</span>
-          </Link>
-          <Link
-            className="flex items-center gap-4 hover:underline"
-            href={"https://github.com/marmanios/patch_notes"}
-          >
-            Contribute!{" "}
-            <Image src={`/github.svg`} height={32} width={32} alt={`GitHub`} />
-          </Link>
-        </div>
-      </header>
-      <main className="mx-auto flex max-w-6xl flex-col items-center gap-12 p4 sm:py-16">
+      <Header/>
+      <main className="mx-auto flex flex-1 max-w-6xl flex-col items-center gap-12 px-4 py-8 sm:py-16">
         <h1 className="text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           Recent Changes
         </h1>
@@ -84,7 +73,7 @@ export default async function HomePage({
           {releases && releases.length === 0 && <li>No Releases Found 😢</li>}
           {!releases && <li>Error Getting Releases 💥</li>}
         </ul>
-        {/* TODO: Pagination controls */}
+        {/* Pagination controls */}
         {totalReleases && (
           <div className="flex w-full max-w-md justify-between">
             <Link
@@ -132,12 +121,7 @@ export default async function HomePage({
           </div>
         )}
       </main>
-      <footer className="flex w-full items-center justify-center border-t-3 border-black p-4">
-        <p className="text-sm text-gray-300">
-          Made by{" "}
-          <Link href={"https://marmanios.com"} className="text-[#FBC200]">Maged</Link>
-        </p>
-      </footer>
+      <Footer/>
     </div>
   );
 }
