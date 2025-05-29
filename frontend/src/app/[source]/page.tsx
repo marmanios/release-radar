@@ -2,7 +2,6 @@ import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { ReleaseTile } from "@/components/release-tile";
 import { createAdminClient } from "@/utils/supabase/admin";
-import Image from "next/image";
 import Link from "next/link";
 
 export default async function SourcePage({
@@ -54,9 +53,9 @@ export default async function SourcePage({
   const totalPages = Math.ceil((totalReleases ?? 0) / resultsPerPage);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
+    <div className="flex min-h-screen flex-col bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
       <Header />
-      <main className="mx-auto flex flex-1 max-w-6xl flex-col items-center gap-12 px-4 py-8 sm:py-16">
+      <main className="mx-auto flex max-w-6xl flex-1 flex-col items-center gap-12 px-4 py-8 sm:py-16">
         <h1 className="text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           <span className="text-[#FBC200]">{source}</span> Release Radar
         </h1>
@@ -119,7 +118,7 @@ export default async function SourcePage({
           </div>
         )}
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

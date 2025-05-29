@@ -2,7 +2,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -13,7 +12,7 @@ export async function TrackedSources() {
   const supabase = await createAdminClient();
   const dbResponse = await supabase.rpc("get_unique_sources");
   const uniqueSources =
-    dbResponse.data?.map((item) => item.unique_source) || [];
+    dbResponse.data?.map((item) => item.unique_source) ?? [];
 
   return (
     <Dialog>
