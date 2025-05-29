@@ -17,6 +17,7 @@
     "db:types": "supabase gen types typescript --project-id vgdcfusgkzehqxystvzi --schema public > src/types/database.ts"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.14",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.4",
     "@t3-oss/env-nextjs": "^0.12.0",

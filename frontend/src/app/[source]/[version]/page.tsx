@@ -1,7 +1,6 @@
 import type { TAiSummary } from "@/types";
 import { createAdminClient } from "@/utils/supabase/admin";
 import Link from "next/link";
-import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -59,9 +58,9 @@ export default async function ChangeLogs({
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
-      <Header />
-      <main className="mx-auto flex flex-col flex-1 max-w-6xl items-center gap-12 px-4 py-8 sm:py-16">
+    <div className="flex min-h-screen flex-col bg-gradient-to-b from-[#440A5F] to-[#3A204F] text-[#E9EDF3]">
+      <Header source={source} />
+      <main className="mx-auto flex max-w-6xl flex-1 flex-col items-center gap-12 px-4 py-8 sm:py-16">
         <h1 className="text-center text-5xl font-extrabold tracking-tight sm:text-[5rem]">
           Changelog summary for{" "}
           <span className="text-[#FBC200]">{patchNotes.version}</span> 📕
@@ -86,7 +85,7 @@ export default async function ChangeLogs({
           {patchNotes.ai_summary.summary && (
             <ReactMarkdown
               components={{
-                code: ({ node, ...props }) => (
+                code: ({ inline, node, ...props }) => (
                   <code
                     style={{ color: "#FBC200", background: "#2e2d2b" }}
                     {...props}
@@ -108,7 +107,7 @@ export default async function ChangeLogs({
               <li key={`note-${index}`} className="mb-2">
                 <ReactMarkdown
                   components={{
-                    code: ({ node, ...props }) => (
+                    code: ({ inline, node, ...props }) => (
                       <code
                         style={{ color: "#FBC200", background: "#2e2d2b" }}
                         {...props}
@@ -133,7 +132,7 @@ export default async function ChangeLogs({
                 <li key={`definition-${index}`} className="mb-2">
                   <ReactMarkdown
                     components={{
-                      code: ({ node, ...props }) => (
+                      code: ({ inline, node, ...props }) => (
                         <code
                           style={{ color: "#FBC200", background: "#2e2d2b" }}
                           {...props}
@@ -147,7 +146,7 @@ export default async function ChangeLogs({
           </ul>
         </section>
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

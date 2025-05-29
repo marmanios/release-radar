@@ -9,6 +9,36 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      dev_patch_notes: {
+        Row: {
+          ai_summary: string
+          created_at: string
+          id: string
+          released_at: string
+          source: string
+          source_url: string
+          version: string
+        }
+        Insert: {
+          ai_summary: string
+          created_at?: string
+          id?: string
+          released_at: string
+          source: string
+          source_url: string
+          version: string
+        }
+        Update: {
+          ai_summary?: string
+          created_at?: string
+          id?: string
+          released_at?: string
+          source?: string
+          source_url?: string
+          version?: string
+        }
+        Relationships: []
+      }
       patch_notes: {
         Row: {
           ai_summary: string
@@ -44,7 +74,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_unique_sources: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          unique_source: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
